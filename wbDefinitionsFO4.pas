@@ -13604,8 +13604,19 @@ begin
     wbEDID
   ]);
 
-  wbRecord(TRNS, 'TRNS', [
-    wbEDID
+  wbRecord(TRNS, 'Transform', [
+    wbEDID,
+    wbStruct(DATA, 'Data', [
+      wbFloat('Unknown'),
+      wbFloat('Unknown'),
+      wbFloat('Unknown'),
+      wbFloat('Unknown'),
+      wbFloat('Unknown'),
+      wbFloat('Unknown'),
+      wbFloat('Unknown'),
+      wbFloat('Unknown'),
+      wbFloat('Unknown')
+    ], cpNormal, True, nil, 7)
   ]);
 
   wbRecord(ZOOM, 'ZOOM', [
