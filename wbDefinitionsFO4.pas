@@ -7973,7 +7973,9 @@ begin
 
   wbRecord(AACT, 'Action', [
     wbEDID,
-    wbCNAM
+    wbCNAM,
+    wbString(DNAM, 'Name'),
+    wbUnknown(TNAM)
   ]);
 
   wbRecord(TXST, 'Texture Set', [
