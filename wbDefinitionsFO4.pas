@@ -7985,13 +7985,14 @@ begin
   wbRecord(TXST, 'Texture Set', [
     wbEDID,
     wbOBNDReq,
+    { Unsure if texture names are the same }
     wbRStruct('Textures (RGB/A)', [
       wbString(TX00,'Difuse'),
       wbString(TX01,'Normal/Gloss'),
-      wbString(TX02,'Environment Mask/Subsurface Tint'),
       wbString(TX03,'Glow/Detail Map'),
       wbString(TX04,'Height'),
       wbString(TX05,'Environment'),
+      wbString(TX02,'Wrinkles'), {TX05 TX02 TX06 Yes this has to go here}
       wbString(TX06,'Multilayer'),
       wbString(TX07,'Backlight Mask/Specular')
     ], []),
@@ -8000,7 +8001,8 @@ begin
       {0x0001}'No Specular Map',
       {0x0002}'Facegen Textures',
       {0x0004}'Has Model Space Normal Map'
-    ]), cpNormal, False)
+    ]), cpNormal, False),
+    wbString(MNAM, 'Material')
   ]);
 
   wbRecord(HDPT, 'Head Part',
