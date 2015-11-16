@@ -7056,8 +7056,9 @@ begin
     wbEDID,
     wbFULLReq,
     wbDESCReq,
-    wbICON,
-    wbStruct(DATA, '', [
+    wbPRPS,
+    wbUnknown(DATA)
+    {>>> wbStruct(DATA, '', [
       wbByteArray('Unknown', 4),
       wbInteger('Teaches', itS8, wbEnum([
         'One Handed',
@@ -7108,7 +7109,7 @@ begin
         'Stamina',
         'Unknown'
       ])
-    ], cpNormal, True)
+    ], cpNormal, True) <<<}
   ]);
 
   wbRecord(CLMT, 'Climate', [
