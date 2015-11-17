@@ -10672,7 +10672,6 @@ begin
       {0x00000400} 10, 'Displays In Main Menu'
     ])), [
     wbEDID,
-    wbICON,
     wbDESCReq,
     wbCTDAs,
     wbFormIDCk(NNAM, 'Loading Screen NIF', [STAT, NULL], False, cpNormal, True),
@@ -10682,9 +10681,14 @@ begin
       wbInteger('Y', itS16),
       wbInteger('Z', itS16)
     ]),
+    wbFormIDCk(TNAM, 'Transform', [TRNS]),
     wbStruct(ONAM, 'Rotation Offset Constraints', [
       wbInteger('Min', itS16),
       wbInteger('Max', itS16)
+    ]),
+    wbStruct(ZNAM, 'Unknown', [
+      wbFloat('Unknown'),
+      wbFloat('Unknown')
     ]),
     wbStruct(XNAM, 'Initial Translation Offset', [
       wbFloat('X'),
