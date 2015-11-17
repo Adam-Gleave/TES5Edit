@@ -7538,9 +7538,13 @@ begin
     wbEDID,
     wbVMAD,
     wbOBNDReq,
+    wbPTRN,
     wbFULL,
     wbMODL,
     wbDEST,
+    wbKSIZ,
+    wbKWDAs,
+    wbUnknown(NTRM),
     wbFormIDCk(SNAM, 'Sound - Open', [SOUN, SNDR]),
     wbFormIDCk(ANAM, 'Sound - Close', [SOUN, SNDR]),
     wbFormIDCk(BNAM, 'Sound - Loop', [SOUN, SNDR]),
@@ -7551,7 +7555,9 @@ begin
       'Minimal Use',
       'Sliding',
       'Do Not Open in Combat Search'
-    ]), cpNormal, True)
+    ]), cpNormal, True),
+    wbLString(ONAM, 'Unknown'),
+    wbLString(CNAM, 'Unknown')
   ]);
 
   wbBlendModeEnum := wbEnum([
