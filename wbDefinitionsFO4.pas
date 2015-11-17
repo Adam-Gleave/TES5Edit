@@ -10349,7 +10349,8 @@ begin
       ], True)),
       wbInteger('Animation Group Section', itU8{, wbIdleAnam}),
       wbInteger('Replay Delay', itU16)
-    ], cpIgnore, True)
+    ], cpIgnore, True),
+    wbString(GNAM, 'Unknown')
   ]);
 
   wbRecord(INFO, 'Dialog response',
