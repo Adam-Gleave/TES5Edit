@@ -13585,9 +13585,6 @@ end;
 {>>> Unused records, they have empty GRUP in skyrim.esm and still in Fallout 4.esm <<<}
 procedure DefineFO4p;
 begin
-  wbRecord(SCOL, 'SCOL', [
-    wbEDID
-  ]);
   wbRecord(SCPT, 'SCPT', [
     wbEDID
   ]);
@@ -13837,6 +13834,31 @@ begin
     wbUnknown(VNAM, cpNormal, True)
   ]);
 
+  wbRecord(SCOL, 'Static Collection', [
+    wbEDID,
+    wbOBNDReq,
+    wbPTRN,
+    wbMODL,
+    wbFULL,
+    wbFLTR,
+    wbRStructsSK('Parts', 'Part', [0], [
+      wbFormIDCk(ONAM, 'Static', [STAT]),
+      wbArrayS(DATA, 'Placements', wbStruct('Placement', [
+        wbStruct('Position', [
+          wbFloat('X'),
+          wbFloat('Y'),
+          wbFloat('Z')
+        ]),
+        wbStruct('Rotation', [
+          wbFloat('X', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
+          wbFloat('Y', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize),
+          wbFloat('Z', cpNormal, True, wbRotationFactor, wbRotationScale, nil, RadiansNormalize)
+        ]),
+        wbFloat('Scale')
+      ]), 0, cpNormal, True)
+    ], [], cpNormal, True)
+  ]);
+
   wbRecord(SCSN, 'Scene Sound', [
     wbEDID,
     wbInteger(PNAM, 'Index?', itU16),
@@ -13973,7 +13995,7 @@ begin
    wbAddGroupOrder(LIGH);
    wbAddGroupOrder(MISC);
    wbAddGroupOrder(STAT);
-   wbAddGroupOrder(SCOL);{>>> Unused in Skyrim, but contained in Skyrim.esm <<<}
+   wbAddGroupOrder(SCOL);
    wbAddGroupOrder(MSTT);
    wbAddGroupOrder(GRAS);
    wbAddGroupOrder(TREE);
