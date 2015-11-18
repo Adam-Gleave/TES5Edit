@@ -8783,7 +8783,8 @@ begin
       wbInteger('Radial Blur Ramp Down', itU32),
       wbInteger('Radial Blur Down Start', itU32),
       wbInteger('Fade Color', itU32),
-      wbInteger('Motion Blur Strength', itU32)
+      wbInteger('Motion Blur Strength', itU32),
+      wbUnknown
     ]),
     wbArray(BNAM, 'Blur Radius', wbTimeInterpolator),
     wbArray(VNAM, 'Double Vision Strength', wbTimeInterpolator),
@@ -8797,6 +8798,8 @@ begin
     wbArray(WNAM, 'DoF Strength', wbTimeInterpolator),
     wbArray(XNAM, 'DoF Distance', wbTimeInterpolator),
     wbArray(YNAM, 'DoF Range', wbTimeInterpolator),
+    wbUnknown(NAM5),
+    wbUnknown(NAM6),
     wbArray(NAM4, 'Motion Blur Strength', wbTimeInterpolator),
     wbRStruct('HDR', [
       wbArray(_00_IAD, 'Eye Adapt Speed Mult', wbTimeInterpolator),
