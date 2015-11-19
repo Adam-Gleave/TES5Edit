@@ -13643,8 +13643,9 @@ begin
     ]))
   ]);
 
-  wbRecord(LAYR, 'LAYR', [
-    wbEDID
+  wbRecord(LAYR, 'Layer', [
+    wbEDID,
+    wbFormIDCk(PNAM, 'Parent', [LAYR])
   ]);
 
   wbRecord(LENS, 'LENS', [
