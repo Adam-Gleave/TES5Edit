@@ -8084,7 +8084,12 @@ begin
 
   wbRecord(KYWD, 'Keyword', [
     wbEDID,
-    wbCNAM
+    wbCNAM,
+    wbString(DNAM, 'Unknown'),
+    wbUnknown(TNAM),
+    wbFULL,
+    wbFormIDCk(DATA, 'Unknown', [AORU]),
+    wbString(NNAM, 'Unknown')
   ]);
 end;
 
