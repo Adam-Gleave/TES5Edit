@@ -13554,7 +13554,18 @@ begin
   ]);
 
   wbRecord(BNDS, 'BNDS', [
-    wbEDID
+    wbEDID,
+    wbOBND,
+    wbStruct(DNAM, 'Data', [
+      wbFloat('Unknown'),
+      wbFloat('Unknown'),
+      wbFloat('Unknown'),
+      wbFloat('Unknown'),
+      wbFloat('Unknown'),
+      wbFloat('Unknown'),
+      wbFloat('Unknown')
+    ]),
+    wbFormIDCk(TNAM, 'Texture', [TXST])
   ]);
 
   wbRecord(CMPO, 'Component', [
