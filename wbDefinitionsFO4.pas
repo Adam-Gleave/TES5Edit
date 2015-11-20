@@ -13775,8 +13775,13 @@ begin
     wbUnknown(VNAM, cpNormal, True)
   ]);
 
-  wbRecord(SCSN, 'SCSN', [
-    wbEDID
+  wbRecord(SCSN, 'Scene Sound', [
+    wbEDID,
+    wbInteger(PNAM, 'Index?', itU16),
+    wbRArray('Sounds', wbStruct(CNAM, 'Sound', [
+      wbFormIDCk('Sound Categoty', [SNCT]),
+      wbFloat('Unknown')
+    ]))
   ]);
 
 end;
