@@ -10352,7 +10352,8 @@ begin
       wbInteger('Diffusion %', itU8),
       wbInteger('Density %', itU8),
       wbInteger('Unknown', itU8)
-    ], cpNormal, True)
+    ], cpNormal, True),
+    wbUnknown(ANAM)
   ]);
 
   wbRecord(GRAS, 'Grass', [
