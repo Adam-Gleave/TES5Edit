@@ -13036,7 +13036,7 @@ begin
     wbFULL,
     wbKSIZ,
     wbKWDAs,
-    wbMDOB,
+    //wbMDOB,
     wbETYP,
     wbDESCReq,
     wbSPIT,
