@@ -13686,7 +13686,14 @@ begin
   ]);
 
   wbRecord(NOCM, 'NOCM', [
-    wbEDID
+    wbRArray('Unknown',
+      wbRStruct('Unknown', [
+        wbInteger(INDX, 'Index', itU32),
+        wbRArray('Unknown', wbUnknown(DATA)),
+        wbUnknown(INTV),
+        wbString(NAM1, 'Model')
+      ], [])
+    )
   ]);
 
 end;
