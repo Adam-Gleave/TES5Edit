@@ -13729,7 +13729,12 @@ begin
   ]);
 
   wbRecord(OVIS, 'OVIS', [
-    wbEDID
+    wbRArray('Unknown',
+      wbRStruct('Unknown', [
+        wbFormIDCk(INDX, 'Object', [STAT]),
+        wbUnknown(DATA)
+      ], [])
+    )
   ]);
 
   wbRecord(PKIN, 'PKIN', [
