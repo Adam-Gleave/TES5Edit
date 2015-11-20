@@ -121,9 +121,11 @@ const
   AHCM : TwbSignature = 'AHCM'; { New To Skyrim }
   AIDT : TwbSignature = 'AIDT';
   ALCA : TwbSignature = 'ALCA'; { New To Skyrim }
+  ALCC : TwbSignature = 'ALCC'; { New To Fallout 4 }
   ALCH : TwbSignature = 'ALCH';
   ALCL : TwbSignature = 'ALCL'; { New To Skyrim }
   ALCO : TwbSignature = 'ALCO'; { New To Skyrim }
+  ALCS : TwbSignature = 'ALCS'; { New To Fallout 4 }
   ALDN : TwbSignature = 'ALDN'; { New To Skyrim }
   ALEA : TwbSignature = 'ALEA'; { New To Skyrim }
   ALED : TwbSignature = 'ALED'; { New To Skyrim }
@@ -135,8 +137,11 @@ const
   ALFI : TwbSignature = 'ALFI'; { New To Skyrim }
   ALFL : TwbSignature = 'ALFL'; { New To Skyrim }
   ALFR : TwbSignature = 'ALFR'; { New To Skyrim }
+  ALFV : TwbSignature = 'ALFV'; { New To Fallout 4 }
   ALID : TwbSignature = 'ALID'; { New To Skyrim }
+  ALLA : TwbSignature = 'ALLA'; { New To Fallout 4 }
   ALLS : TwbSignature = 'ALLS'; { New To Skyrim }
+  ALMI : TwbSignature = 'ALMI'; { New To Fallout 4 }
   ALNA : TwbSignature = 'ALNA'; { New To Skyrim }
   ALNT : TwbSignature = 'ALNT'; { New To Skyrim }
   ALPC : TwbSignature = 'ALPC'; { New To Skyrim }
@@ -1127,8 +1132,12 @@ var
   s, t       : string;
 begin
   case aType of
-    ctToStr: if aInt = -1 then Result := 'None' else
-      Result := IntToStr(aInt) + ' <Warning: Could not resolve alias>';
+    ctToStr: if aInt = -1 then
+        Result := 'None'
+      else if aInt = -2 then
+        Result := 'Player'
+      else
+        Result := IntToStr(aInt) + ' <Warning: Could not resolve alias>';
     ctToEditValue: if aInt = -1 then Result := 'None' else
       Result := IntToStr(aInt);
     ctToSortKey: begin
@@ -1141,7 +1150,7 @@ begin
     ctEditInfo: Result := '';
   end;
 
-  if (aInt = -1) and (aType <> ctEditType) and (aType <> ctEditInfo) then
+  if ((aInt = -1) or (aInt = -2)) and (aType <> ctEditType) and (aType <> ctEditInfo) then
     Exit;
 
   if not Assigned(aQuestRef) then
@@ -1151,6 +1160,8 @@ begin
   if not Supports(aQuestRef, IwbMainRecord, MainRecord) then
     if not Supports(aQuestRef.LinksTo, IwbMainRecord, MainRecord) then
       Exit;
+
+  MainRecord := MainRecord.WinningOverride;
 
   if MainRecord.Signature <> QUST then begin
     case aType of
@@ -1165,8 +1176,9 @@ begin
       Result := 'ComboBox';
       Exit;
     end;
-    ctEditInfo:
+    ctEditInfo: begin
       EditInfos := TStringList.Create;
+    end;
   else
     EditInfos := nil;
   end;
@@ -1175,6 +1187,8 @@ begin
     if Supports(MainRecord.ElementByName['Aliases'], IwbContainerElementRef, Aliases) then begin
       for i := 0 to Pred(Aliases.ElementCount) do
         if Supports(Aliases.Elements[i], IwbContainerElementRef, Alias) then begin
+          if Assigned(Alias.ElementBySignature['ALCS']) then
+            Continue;
           j := Alias.Elements[0].NativeValue;
           s := Alias.ElementEditValues['ALID'];
           t := IntToStr(j);
@@ -11491,8 +11505,10 @@ begin
       ]))
     ]),
     wbString(ENAM, 'Event', 4),
+    wbUnknown(LNAM),
+    wbFormIDCk(XNAM, 'Global', [GLOB]),
     wbRArray('Text Display Globals', wbFormIDCk(QTGL, 'Global', [GLOB])),
-    wbString(FLTR, 'Object Window Filter', 0, cpTranslate),
+    wbFLTR,
     wbRStruct('Quest Dialogue Conditions', [wbCTDAs], [], cpNormal, False),
     wbEmpty(NEXT, 'Marker'),
     wbCTDAs, {>>> Unknown, doesn't show up in CK <<<}
@@ -11513,13 +11529,9 @@ begin
           {0x02} 'Fail Quest'
         ])),
         wbCTDAs,
+        wbString(NAM2, 'Note'),
         wbLString(CNAM, 'Log Entry', 0, cpTranslate),
-        wbFormIDCk(NAM0, 'Next Quest', [QUST]),
-        {>>> BEGIN leftover from earlier CK versions <<<}
-        wbByteArray(SCHR, 'Unused', 0, cpIgnore, false, false, wbNeverShow),
-        wbByteArray(SCTX, 'Unused', 0, cpIgnore, false, false, wbNeverShow),
-        wbByteArray(QNAM, 'Unused', 0, cpIgnore, false, false, wbNeverShow)
-        {>>> END leftover from earlier CK versions <<<}
+        wbFormIDCk(NAM0, 'Next Quest', [QUST])
       ], []))
     ], [])),
     wbRArray('Objectives', wbRStruct('Objective', [
@@ -11532,7 +11544,7 @@ begin
           wbInteger('Flags', itU8, wbFlags([
             {0x01} 'Compass Marker Ignores Locks'
           ])),
-          wbByteArray('Unused', 3)
+          wbUnknown
         ]),
         wbCTDAs
       ], []))
@@ -11586,7 +11598,9 @@ begin
             wbString(ALFE, 'From Event', 4),
             wbByteArray(ALFD, 'Event Data')
           ], []),
+          wbUnknown(ALCC),
           wbCTDAs,
+          wbUnknown(ALCC),
           wbKSIZ,
           wbKWDAs,
           wbCOCT,
@@ -11595,7 +11609,9 @@ begin
           wbFormIDCk(OCOR, 'Observe dead body override package list', [FLST], False, cpNormal, False),
           wbFormIDCk(GWOR, 'Guard warn override package list', [FLST], False, cpNormal, False),
           wbFormIDCk(ECOR, 'Combat override package list', [FLST], False, cpNormal, False),
+          wbUnknown(ALLA),
           wbFormIDCk(ALDN, 'Display Name', [MESG]),
+          wbUnknown(ALFV),
           wbRArray('Alias Spells', wbFormIDCk(ALSP, 'Spell', [SPEL])),
           wbRArray('Alias Factions', wbFormIDCk(ALFC, 'Faction', [FACT])),
           wbRArray('Alias Package Data', wbFormIDCk(ALPC, 'Package', [PACK])),
@@ -11648,7 +11664,9 @@ begin
             wbString(ALFE, 'From Event', 4),
             wbByteArray(ALFD, 'Event Data')
           ], []),
+          wbUnknown(ALCC),
           wbCTDAs,
+          wbUnknown(ALCC),
           wbKSIZ,
           wbKWDAs,
           wbCOCT,
@@ -11657,13 +11675,21 @@ begin
           wbFormIDCk(OCOR, 'Observe dead body override package list', [FLST], False, cpNormal, False),
           wbFormIDCk(GWOR, 'Guard warn override package list', [FLST], False, cpNormal, False),
           wbFormIDCk(ECOR, 'Combat override package list', [FLST], False, cpNormal, False),
+          wbUnknown(ALLA),
           wbFormIDCk(ALDN, 'Display Name', [MESG]),
+          wbUnknown(ALFV),
           wbRArray('Alias Spells', wbFormIDCk(ALSP, 'Spell', [SPEL])),
           wbRArray('Alias Factions', wbFormIDCk(ALFC, 'Faction', [FACT])),
           wbRArray('Alias Package Data', wbFormIDCk(ALPC, 'Package', [PACK])),
           wbFormIDCk(VTCK, 'Voice Types', [NPC_, FLST, NULL]),
           wbEmpty(ALED, 'Alias End', cpNormal, True)
-        ], [], cpNormal, False, nil, False, nil, wbContainerAfterSet)
+        ], [], cpNormal, False, nil, False, nil, wbContainerAfterSet),
+
+        wbRStruct('Alias', [
+          wbUnknown(ALCS),
+          wbUnknown(ALMI)
+        ], [])
+
       ], [])
     ),
     wbString(NNAM, 'Description', 0, cpNormal, False),
@@ -11676,7 +11702,9 @@ begin
         wbByteArray('Unknown', 3)
       ]),
       wbCTDAs
-    ], []))
+    ], [])),
+    wbFormIDCk(GNAM, 'Keyword', [KYWD]),
+    wbString(SNAM, 'Unknown')
   ]);
 
   wbBodyPartIndexEnum := wbEnum([
