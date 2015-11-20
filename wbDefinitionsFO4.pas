@@ -13737,8 +13737,12 @@ begin
     )
   ]);
 
-  wbRecord(PKIN, 'PKIN', [
-    wbEDID
+  wbRecord(PKIN, 'Pack In', [
+    wbEDID,
+    wbOBND,
+    wbFLTR,
+    wbFormIDCk(CNAM, 'Cell', [CELL]),
+    wbUnknown(VNAM)
   ]);
 
   wbRecord(RFGP, 'RFGP', [
