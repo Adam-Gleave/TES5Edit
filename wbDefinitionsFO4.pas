@@ -8290,7 +8290,7 @@ begin
         ]),
         wbArray('Vertices', wbByteArray('Vertex', 12), -1),
         wbArray('Triangles', wbByteArray('Triangle', 16), -1),
-        wbArray('External Connections',
+        {wbArray('External Connections',
           wbStruct('Connection', [
             wbByteArray('Unknown', 4),
             wbFormIDCk('Mesh', [NAVM]),
@@ -8303,12 +8303,12 @@ begin
             wbByteArray('Unknown', 4),
             wbFormIDCk('Door', [REFR])
           ])
-        , -1),
+        , -1),}
         wbUnknown
       ]),
       wbUnknown(ONAM),
-      wbUnknown(PNAM),
-      wbUnknown(NNAM)
+      wbUnknown(NNAM),
+      wbUnknown(MNAM)
     ], False, wbNAVMAddInfo);
 
   end else begin
@@ -8443,7 +8443,8 @@ begin
             //wbInteger('Cover Edge #2 Flags', itU8)
           ])
         , -1),
-        wbArray('Edge Links',
+        wbUnknown
+        {wbArray('Edge Links',
           wbStruct('Edge Link', [
             wbByteArray('Unknown', 4),
             wbFormIDCk('Mesh', [NAVM]),
@@ -8467,11 +8468,11 @@ begin
         wbFloat('Max X'),
         wbFloat('Max Y'),
         wbFloat('Max Z'),
-        wbArray('NavMeshGrid', wbArray('NavMeshGridCell', wbInteger('Triangle', itS16), -1))
+        wbArray('NavMeshGrid', wbArray('NavMeshGridCell', wbInteger('Triangle', itS16), -1))}
       ]),
       wbUnknown(ONAM),
-      wbUnknown(PNAM),
-      wbUnknown(NNAM)
+      wbUnknown(NNAM),
+      wbUnknown(MNAM)
     ], False, wbNAVMAddInfo);
 
   end;
