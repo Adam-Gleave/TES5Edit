@@ -13715,8 +13715,17 @@ begin
     wbString(PNAM, 'Game')
   ]);
 
-  wbRecord(OMOD, 'OMOD', [
-    wbEDID
+  wbRecord(OMOD, 'Modification', [
+    wbEDID,
+    wbFULL,
+    wbLString(DESC, 'Description'),
+    wbMODL,
+    wbUnknown(DATA),
+    wbArray(MNAM, 'Keywords', wbFormIDCk('Keyword', [KYWD])),
+    wbArray(FNAM, 'Keywords', wbFormIDCk('Keyword', [KYWD])),
+    wbFormID(LNAM),
+    wbUnknown(NAM1),
+    wbFLTR
   ]);
 
   wbRecord(OVIS, 'OVIS', [
