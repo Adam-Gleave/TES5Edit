@@ -6506,16 +6506,16 @@ begin
     ])), [
     wbEDID,
     wbOBNDReq,
+    wbPTRN,
     wbFULL,
     wbKSIZ,
     wbKWDAs,
-    wbDESC,
     wbMODL,
+    wbFormIDCk(YNAM, 'Sound - Pick Up', [SNDR]),
+    wbFormIDCk(ZNAM, 'Sound - Drop', [SNDR]),
+    wbCUSD,
     wbDEST,
-    wbICON,
-    wbFormIDCk(YNAM, 'Sound - Pick Up', [SNDR, SOUN]),
-    wbFormIDCk(ZNAM, 'Sound - Drop', [SNDR, SOUN]),
-    wbETYP,
+    wbDESC,
     wbFloat(DATA, 'Weight', cpNormal, True),
     wbStruct(ENIT, 'Effect Data', [
       wbInteger('Value', itS32),
@@ -6543,6 +6543,7 @@ begin
       wbFloat('Addiction Chance'),
       wbFormIDCk('Sound - Consume', [SNDR, NULL])
     ], cpNormal, True),
+    wbLString(DNAM, 'Unknown'),
     wbEffectsReq
   ], False, nil, cpNormal, False, wbRemoveEmptyKWDA, wbKeywordsAfterSet);
 
