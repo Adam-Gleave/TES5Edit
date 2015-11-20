@@ -9159,7 +9159,9 @@ begin
       'Stair Material',
       'Arrows Stick'
     ], False)),
-    wbFormIDCk(HNAM, 'Havok Impact Data Set', [IPDS, NULL])
+    wbFormIDCk(HNAM, 'Havok Impact Data Set', [IPDS, NULL]),
+    wbString(ANAM, 'Unknown'),
+    wbMODT
   ]);
 
   wbRecord(IPCT, 'Impact', [
