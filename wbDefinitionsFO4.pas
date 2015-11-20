@@ -9787,7 +9787,7 @@ begin
         wbFloat('Start'),
         wbFloat('End')
       ]),
-      wbByteArray('Unknown', 4)
+      wbUnknown
     ], cpNormal, True, nil, 11),
     wbStruct(DALC, 'Directional Ambient Lighting Colors', [wbAmbientColors], cpNormal, True)
   ]);
