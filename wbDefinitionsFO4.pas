@@ -318,6 +318,7 @@ const
   FTYP : TwbSignature = 'FTYP'; { New To Fallout 4 }
   FULL : TwbSignature = 'FULL';
   FURN : TwbSignature = 'FURN';
+  FVPA : TwbSignature = 'FVPA'; { New To Fallout 4 }
   GDRY : TwbSignature = 'GDRY'; { New to Fallout 4 }
   GLOB : TwbSignature = 'GLOB';
   GMST : TwbSignature = 'GMST';
@@ -11012,13 +11013,28 @@ begin
 
   wbRecord(COBJ, 'Constructible Object', [
     wbEDID,
-    wbCOCT,
-    wbCNTOs,
+    wbFormIDCk(YNAM, 'Sound - Pick Up', [SNDR]),
+    wbFormIDCk(ZNAM, 'Sound - Drop', [SNDR]),
+    wbArrayS(FVPA, 'Components',
+      wbStructSK([0], 'Component', [
+        wbFormIDCk('Component', [CMPO, MISC, ALCH, AMMO]),
+        wbInteger('Count', itU32)
+      ])
+    ),
+    wbLString(DESC, 'Description', 0, cpTranslate),
     wbCTDAs,
     wbFormID(CNAM, 'Created Object'),
     wbFormIDCk(BNAM, 'Workbench Keyword', [KYWD]),
-    wbInteger(NAM1, 'Created Object Count', itU16)
-  ], False, nil, cpNormal, False, nil, wbContainerAfterSet);
+    wbByteArray(NAM1, 'Unused', 0, cpIgnore), // co_PA_FusionCore01
+    wbByteArray(NAM2, 'Unused', 0, cpIgnore), // co_PA_FusionCore01
+    wbByteArray(NAM3, 'Unused', 0, cpIgnore), // co_PA_FusionCore01
+    wbFormIDCk(ANAM, 'Unknown', [ARTO]),
+    wbArrayS(FNAM, 'Category', wbFormIDCk('Keyword', [KYWD])),
+    wbStruct(INTV, '', [
+      wbInteger('Created Object Count', itU16),
+      wbInteger('Priority', itU16)
+    ], cpNormal, False, nil, 1)
+  ]);
 
   wbRecord(NPC_, 'Non-Player Character (Actor)',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
