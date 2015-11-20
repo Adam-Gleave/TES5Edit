@@ -284,6 +284,7 @@ const
   ENIT : TwbSignature = 'ENIT';
   EPF2 : TwbSignature = 'EPF2';
   EPF3 : TwbSignature = 'EPF3';
+  EPFB : TwbSignature = 'EPFB'; { New To Fallout 4 }
   EPFD : TwbSignature = 'EPFD';
   EPFT : TwbSignature = 'EPFT';
   EQUP : TwbSignature = 'EQUP';
@@ -8858,10 +8859,9 @@ begin
       {0x00000004}  2, 'Non-Playable'
     ])), [
     wbEDID,
-    wbVMAD,
+    wbVMADFragmentedPERK,
     wbFULL,
     wbDESCReq,
-    wbICON,
     wbCTDAs,
     wbStruct(DATA, 'Data', [
       wbInteger('Trait', itU8, wbEnum(['False', 'True'])),
@@ -8870,7 +8870,9 @@ begin
       wbInteger('Playable', itU8, wbEnum(['False', 'True'])),
       wbInteger('Hidden', itU8, wbEnum(['False', 'True']))
     ], cpNormal, True),
+    wbFormIDCk(SNAM, 'UI Sound', [SNDR]),
     wbFormIDCK(NNAM, 'Next Perk', [PERK, NULL]),
+    wbString(FNAM, 'Unknown'),
 
     wbRStructsSK('Effects', 'Effect', [0, 1], [
       wbStructSK(PRKE, [1, 2, 0], 'Header', [
@@ -8885,8 +8887,8 @@ begin
       wbUnion(DATA, 'Effect Data', wbPerkDATADecider, [
         wbStructSK([0, 1], 'Quest + Stage', [
           wbFormIDCk('Quest', [QUST]),
-          wbInteger('Quest Stage', itU8, wbPerkDATAQuestStageToStr, wbCTDAParam2QuestStageToInt),
-          wbByteArray('Unused', 3)
+          wbInteger('Quest Stage', itU16, wbPerkDATAQuestStageToStr, wbCTDAParam2QuestStageToInt),
+          wbByteArray('Unused', 2)
         ]),
         wbFormIDCk('Ability', [SPEL]),
         wbStructSK([0, 1], 'Entry Point', [
@@ -8927,7 +8929,8 @@ begin
           {4} 'SPEL,lstring,flags',
           {5} 'SPEL',
           {6} 'string',
-          {7} 'lstring'
+          {7} 'lstring',
+          {8} 'AVIF'
         ])),
         // case(EPFT) of
         // 1: EPFD=float
@@ -8937,13 +8940,15 @@ begin
         // 5: EPFD=SPEL
         // 6: EPFD=string
         // 7: EPFD=lstring
-        wbLString(EPF2, 'Button Label'),
+
+        wbUnknown(EPFB),
+        wbLString(EPF2, 'Button Label', 0, cpTranslate),
         wbStruct(EPF3, 'Script Flags', [
           wbInteger('Script Flags', itU8, wbFlags([
             'Run Immediately',
             'Replace Default'
           ])),
-          wbByteArray('Unknown', 3)
+          wbByteArray('Unknown', 1)
         ]),
         wbUnion(EPFD, 'Data', wbEPFDDecider, [
           {0} wbByteArray('Unknown'),
@@ -8955,10 +8960,10 @@ begin
           {3} wbFormIDCk('Leveled Item', [LVLI]),
           {4} wbFormIDCk('Spell', [SPEL]),
           {5} wbFormIDCk('Spell', [SPEL]),
-          {6} wbString('Text'),
-          {7} wbLString('Text'),
+          {6} wbString('Text', 0, cpTranslate),
+          {7} wbLString('Text', 0, cpTranslate),
           {8} wbStruct('Actor Value, Float', [
-                wbInteger('Actor Value', itU32, wbEPFDActorValueToStr, wbEPFDActorValueToInt),
+                wbActorValue, // wbInteger('Actor Value', itU32, wbEPFDActorValueToStr, wbEPFDActorValueToInt),
                 wbFloat('Float')
               ])
         ], cpNormal, False{, wbEPFDDontShow})
