@@ -13672,8 +13672,17 @@ begin
     wbEDID
   ]);
 
-  wbRecord(MSWP, 'MSWP', [
-    wbEDID
+  wbRecord(MSWP, 'Material Swap', [
+    wbEDID,
+    wbString(FNAM),
+    wbRArray('Unknown',
+      wbRStruct('Unknown', [
+        wbString(BNAM),
+        wbString(SNAM),
+        wbString(FNAM),
+        wbUnknown(CNAM)
+      ], [])
+    )
   ]);
 
   wbRecord(NOCM, 'NOCM', [
