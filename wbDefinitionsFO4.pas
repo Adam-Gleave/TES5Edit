@@ -221,6 +221,7 @@ const
   CTDA : TwbSignature = 'CTDA';
   CUSD : TwbSignature = 'CUSD'; { New to Fallout 4 }
   DALC : TwbSignature = 'DALC'; { New to Skyrim }
+  DAMA : TwbSignature = 'DAMA'; { New to Fallout 4 }
   DAMC : TwbSignature = 'DAMC'; { New to Fallout 4 }
   DATA : TwbSignature = 'DATA';
   DEBR : TwbSignature = 'DEBR';
@@ -322,6 +323,7 @@ const
   INFO : TwbSignature = 'INFO';
   INGR : TwbSignature = 'INGR';
   INNR : TwbSignature = 'INNR'; { New To Fallout 4 }
+  INRD : TwbSignature = 'INRD'; { New To Fallout 4 }
   INTV : TwbSignature = 'INTV';
   IPCT : TwbSignature = 'IPCT';
   IPDS : TwbSignature = 'IPDS';
@@ -6593,40 +6595,51 @@ begin
     wbEDID,
     wbVMAD,
     wbOBNDReq,
+    wbPTRN,
     wbFULL,
     wbEITM,
-    wbInteger(EAMT, 'Enchantment Amount', itU16),
     wbRStruct('Male world model', [
       wbString(MOD2, 'Model Filename'),
       wbByteArray(MO2T, 'Texture Files Hashes', 0, cpIgnore, false, false, wbNeverShow),
       wbMO2S
     ], []),
-    wbICON,
     wbRStruct('Female world model', [
       wbString(MOD4, 'Model Filename'),
       wbByteArray(MO4T, 'Texture Files Hashes', 0, cpIgnore, false, false, wbNeverShow),
       wbMO4S
     ], []),
-    wbICO2,
-    wbBODTBOD2,
+    wbBOD2,
     wbDEST,
-    wbFormIDCk(YNAM, 'Sound - Pick Up', [SNDR, SOUN]),
-    wbFormIDCk(ZNAM, 'Sound - Drop', [SNDR, SOUN]),
-    wbString(BMCT, 'Ragdoll Constraint Template'),
+    wbFormIDCk(YNAM, 'Sound - Pick Up', [SNDR]),
+    wbFormIDCk(ZNAM, 'Sound - Drop', [SNDR]),
     wbETYP,
-    wbFormIDCk(BIDS, 'Bash Impact Data Set', [IPDS]),
     wbFormIDCk(BAMT, 'Alternate Block Material', [MATT]),
     wbFormIDCk(RNAM, 'Race', [RACE]),
     wbKSIZ,
     wbKWDAs,
     wbDESC,
-    wbRArray('Armature', wbFormIDCK(MODL, 'Model Filename', [ARMA, NULL])),
+    wbFormIDCk(INRD, 'Unknown', [INNR]),
+    wbRArray('Armatures',
+      wbRStruct('Armature', [
+        wbInteger(INDX, 'Index', itU16),
+        wbFormIDCk(MODL, 'Armature', [ARMA])
+      ], [])
+    ),
     wbStruct(DATA, 'Data', [
       wbInteger('Value', itS32),
-      wbFloat('Weight')
+      wbFloat('Weight'),
+      wbInteger('Power Armor Health', itU32)
     ], cpNormal, True),
-    wbInteger(DNAM, 'Armor Rating', itS32, wbDiv(100), cpNormal, True),
-    wbFormIDCk(TNAM, 'Template Armor', [ARMO])
+    wbStruct(FNAM, '', [
+      wbInteger('Damage Resistance', itU16),
+      wbUnknown
+    ]),
+    wbArrayS(DAMA, 'Resistances',wbStructSK([0], 'Resistance', [
+      wbFormIDCk('Damage Type', [DMGT]),
+      wbInteger('Value', itU32)
+    ])),
+    wbAPPR,
+    wbOBTESequence
   ], False, nil, cpNormal, False, wbARMOAfterLoad, wbKeywordsAfterSet);
 
   wbRecord(ARMA, 'Armor Addon', [
