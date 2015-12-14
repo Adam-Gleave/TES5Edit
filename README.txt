@@ -1,3 +1,9 @@
+#Our GitHub Issue Tracker
+ 
+Our [GitHub issue tracker](https://github.com/TES5Edit/TES5Edit/issues) offers a place to submit and discuss feature requests and bug reports. When using it, please ensure that any criticism you provide is constructive.
+ 
+Please do not use the tracker for general help and support on how to use xEdit.
+
 #summary TES5Edit Readme
 
 TES5Edit 3.1.2 EXPERIMENTAL by ElminsterAU
@@ -17,6 +23,7 @@ Official Bethesda Developmental Thread: http://forums.bethsoft.com/topic/1529894
 Rename to TES4Edit.exe to work with Oblivion.
 Rename to FO3Edit.exe to work with Fallout3.
 Rename to FNVEdit.exe to work with New Vegas.
+Rename to FO4Edit.exe to work with Fallout 4.
 
 Fallout3 Training Manual for FO3Edit (applies to all game versions)
 http://fallout3.nexusmods.com/mods/8629
