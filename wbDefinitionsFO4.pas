@@ -6132,102 +6132,226 @@ begin
       wbInteger('Function', itU16, wbCTDAFunctionToStr, wbCTDAFunctionToInt),
       wbByteArray('Unused', 2, cpIgnore, False, wbNeverShow),
       wbUnion('Parameter #1', wbCTDAParam1Decider, [
+        { unknown }
         wbByteArray('Unknown', 4),
+        { 0 ptNone}
         wbByteArray('None', 4, cpIgnore),
+        { 1 ptInteger}
         wbInteger('Integer', itS32),
+        { 2 ptFloat}
         wbFloat('Float'),
-        wbByteArray('Variable Name (unused)', 4, cpIgnore),
-        wbInteger('Sex', itU32, wbSexEnum),
-        wbActorValue,
-        wbInteger('Crime Type', itU32, wbCrimeTypeEnum),
-        wbInteger('Axis', itU32, wbAxisEnum),
-        wbInteger('Quest Stage (unused)', itS32),
-        wbInteger('Misc Stat', itU32, wbMiscStatEnum),
-        wbInteger('Alignment', itU32, wbAlignmentEnum),
-        wbFormIDCkNoReach('Equip Type', [EQUP]),
-        wbInteger('Form Type', itU32, wbFormTypeEnum),
-        wbInteger('Critical Stage', itU32, wbCriticalStageEnum),
-        wbFormIDCkNoReach('Object Reference', [NULL, PLYR, ACHR, REFR, PGRE, PHZD, PMIS, PARW, PBAR, PBEA, PCON, PFLA]),
-        wbFormIDCkNoReach('Inventory Object', [ARMO, BOOK, MISC, WEAP, AMMO, KEYM, ALCH, SCRL, SLGM, INGR, FLST, LIGH, LVLI, COBJ]),
+        { 3 ptActor}
         wbFormIDCkNoReach('Actor', [NULL, PLYR, ACHR, REFR]),
-        wbFormIDCkNoReach('Voice Type', [VTYP, FLST]),
-        wbFormIDCkNoReach('Idle', [IDLE]),
-        wbFormIDCkNoReach('Form List', [FLST]),
-        wbFormIDCkNoReach('Quest', [QUST]),
-        wbFormIDCkNoReach('Faction', [FACT]),
-        wbFormIDCkNoReach('Cell', [CELL]),
-        wbFormIDCkNoReach('Class', [CLAS]),
-        wbFormIDCkNoReach('Race', [RACE]),
+        { 4 ptActorBase}
         wbFormIDCkNoReach('Actor Base', [NPC_]),
-        wbFormIDCkNoReach('Global', [GLOB]),
-        wbFormIDCkNoReach('Weather', [WTHR]),
-        wbFormIDCkNoReach('Package', [PACK]),
-        wbFormIDCkNoReach('Encounter Zone', [ECZN]),
-        wbFormIDCkNoReach('Perk', [PERK]),
-        wbFormIDCkNoReach('Owner', [NULL, FACT, NPC_]),
-        wbFormIDCkNoReach('Furniture', [FURN, FLST]),
-        wbFormIDCkNoReach('Effect Item', [SPEL, ENCH, ALCH, INGR, SCRL]),
-        wbFormIDCkNoReach('Base Effect', [MGEF]),
-        wbFormIDCkNoReach('Worldspace', [WRLD, FLST]),
-        wbInteger('VATS Value Function', itU32, wbVATSValueFunctionEnum),
-        wbInteger('VATS Value Param (INVALID)', itU32),
-        wbFormIDCkNoReach('Referenceable Object', [NULL, NPC_, PROJ, TREE, SOUN, ACTI, DOOR, STAT, FURN, CONT, ARMO, AMMO, MISC, WEAP, BOOK, KEYM, ALCH, LIGH, GRAS, ASPC, IDLM, ARMA, MSTT, TACT, FLST, LVLI, LVSP, SPEL, SCRL, SHOU, SLGM, ENCH], [NPC_, PROJ, TREE, SOUN, ACTI, DOOR, STAT, FURN, CONT, ARMO, AMMO, MISC, WEAP, BOOK, KEYM, ALCH, LIGH, GRAS, ASPC, IDLM, ARMA, MSTT, TACT, LVLI, LVSP, SPEL, SCRL, SHOU, SLGM, ENCH]),
-        wbFormIDCkNoReach('Region', [REGN]),
-        wbFormIDCkNoReach('Keyword', [KYWD, NULL]),
+        { 5 ptActorValue}
+        wbActorValue,
+        { 6 ptAdvanceAction}
         wbInteger('Player Action', itU32, wbAdvanceActionEnum),
-        wbInteger('Casting Type', itU32, wbCastingSourceEnum),
-        wbFormIDCkNoReach('Shout', [SHOU]),
-        wbFormIDCkNoReach('Location', [LCTN]),
-        wbFormIDCkNoReach('Location Ref Type', [LCRT]),
+        { 7 ptAlias}
         wbInteger('Alias', itS32, wbConditionAliasToStr, wbStrToAlias),
-        wbInteger('Packdata ID', itU32),
-        wbFormIDCk('Association Type', [ASTP]),
-        wbInteger('Furniture Anim', itU32, wbFurnitureAnimTypeEnum),
-        wbInteger('Furniture Entry', itU32, wbEnum([], [$010000, 'Front', $020000, 'Behind', $040000, 'Right', $80000, 'Left', $100000, 'Up'])),
-        wbFormIDCk('Scene', [NULL, SCEN]),
-        wbInteger('Ward State', itU32, wbWardStateEnum),
-        wbInteger('Event', itU32, wbEventFunctionAndMemberToStr, wbEventFunctionAndMemberToInt),
-        wbFormID('Event Data')
-      ]),
-      wbUnion('Parameter #2', wbCTDAParam2Decider, [
-        wbByteArray('Unknown', 4),
-        wbByteArray('None', 4, cpIgnore),
-        wbInteger('Integer', itS32),
-        wbFloat('Float'),
-        wbByteArray('Variable Name (unused)', 4, cpIgnore),
-        wbInteger('Sex', itU32, wbSexEnum),
-        wbActorValue,
-        wbInteger('Crime Type', itU32, wbCrimeTypeEnum),
-        wbInteger('Axis', itU32, wbAxisEnum),
-        wbInteger('Quest Stage', itS32, wbCTDAParam2QuestStageToStr, wbCTDAParam2QuestStageToInt),
-        wbInteger('Misc Stat', itU32, wbMiscStatEnum),
+        { 8 ptAlignment}
         wbInteger('Alignment', itU32, wbAlignmentEnum),
-        wbFormIDCkNoReach('Equip Type', [EQUP]),
-        wbInteger('Form Type', itU32, wbFormTypeEnum),
-        wbInteger('Critical Stage', itU32, wbCriticalStageEnum),
-        wbFormIDCkNoReach('Object Reference', [NULL, PLYR, ACHR, REFR, PGRE, PHZD, PMIS, PARW, PBAR, PBEA, PCON, PFLA]),
-        wbFormIDCkNoReach('Inventory Object', [ARMO, BOOK, MISC, WEAP, AMMO, KEYM, ALCH, SCRL, SLGM, INGR, FLST, LIGH, LVLI, COBJ]),
-        wbFormIDCkNoReach('Actor', [NULL, PLYR, ACHR, REFR]),
-        wbFormIDCkNoReach('Voice Type', [VTYP, FLST]),
-        wbFormIDCkNoReach('Idle', [IDLE]),
-        wbFormIDCkNoReach('Form List', [FLST]),
-        wbFormIDCkNoReach('Quest', [QUST]),
-        wbFormIDCkNoReach('Faction', [FACT]),
+        { 9 ptAssociationType}
+        wbFormIDCk('Association Type', [ASTP]),
+        {10 ptAxis}
+        wbInteger('Axis', itU32, wbAxisEnum),
+        {11 ptCastingSource}
+        wbInteger('Casting Type', itU32, wbCastingSourceEnum),
+        {12 ptCell}
         wbFormIDCkNoReach('Cell', [CELL]),
+        {13 ptClass}
         wbFormIDCkNoReach('Class', [CLAS]),
-        wbFormIDCkNoReach('Race', [RACE]),
-        wbFormIDCkNoReach('Actor Base', [NPC_]),
-        wbFormIDCkNoReach('Global', [GLOB]),
-        wbFormIDCkNoReach('Weather', [WTHR]),
-        wbFormIDCkNoReach('Package', [PACK]),
+        {14 ptCrimeType}
+        wbInteger('Crime Type', itU32, wbCrimeTypeEnum),
+        {15 ptCriticalStage}
+        wbInteger('Critical Stage', itU32, wbCriticalStageEnum),
+        {16 ptEncounterZone}
         wbFormIDCkNoReach('Encounter Zone', [ECZN]),
-        wbFormIDCkNoReach('Perk', [PERK]),
-        wbFormIDCkNoReach('Owner', [NULL, FACT, NPC_]),
+        {17 ptEquipType}
+        wbFormIDCkNoReach('Equip Type', [EQUP]),
+        {18 ptEvent}
+        wbInteger('Event', itU32, wbEventFunctionAndMemberToStr, wbEventFunctionAndMemberToInt),
+        {19 ptEventData}
+        wbFormID('Event Data'),
+        {20 ptFaction}
+        wbFormIDCkNoReach('Faction', [FACT]),
+        {21 ptFormList}
+        wbFormIDCkNoReach('Form List', [FLST]),
+        {22 ptFormType}
+        wbInteger('Form Type', itU32, wbFormTypeEnum),
+        {23 ptFurniture}
         wbFormIDCkNoReach('Furniture', [FURN, FLST]),
-        wbFormIDCkNoReach('Effect Item', [SPEL, ENCH, ALCH, INGR, SCRL]),
+        {24 ptFurnitureAnim}
+        wbInteger('Furniture Anim', itU32, wbFurnitureAnimTypeEnum),
+        {25 ptFurnitureEntry}
+        wbInteger('Furniture Entry', itU32, wbEnum([], [$010000, 'Front', $020000, 'Behind', $040000, 'Right', $80000, 'Left', $100000, 'Up'])),
+        {26 ptGlobal}
+        wbFormIDCkNoReach('Global', [GLOB]),
+        {27 ptIdleForm}
+        wbFormIDCkNoReach('Idle', [IDLE]),
+        {28 ptInventoryObject}
+        wbFormIDCkNoReach('Inventory Object', [ARMO, BOOK, MISC, WEAP, AMMO, KEYM, ALCH, INGR, FLST, LIGH, LVLI, COBJ, OMOD, NOTE, CMPO]),
+        {29 ptKeyword}
+        wbFormIDCkNoReach('Keyword', [KYWD, FLST, NULL]),
+        {30 ptLocation}
+        wbFormIDCkNoReach('Location', [LCTN]),
+        {31 ptMagicEffect}
         wbFormIDCkNoReach('Base Effect', [MGEF]),
-        wbFormIDCkNoReach('Worldspace', [WRLD, FLST]),
+        {32 ptMagicItem}
+        wbFormIDCkNoReach('Effect Item', [SPEL, ENCH, ALCH, INGR, SCRL]),
+        {33 ptMiscStat}
+        wbInteger('Misc Stat', itU32, wbMiscStatEnum),
+        {34 ptObjectReference}
+        wbFormIDCkNoReach('Object Reference', [NULL, PLYR, ACHR, REFR, PGRE, PHZD, PMIS, PARW, PBAR, PBEA, PCON, PFLA]),
+        {35 ptOwner}
+        wbFormIDCkNoReach('Owner', [NULL, FACT, NPC_]),
+        {36 ptPackage}
+        wbFormIDCkNoReach('Package', [PACK]),
+        {37 ptPackdata}
+        wbInteger('Packdata ID', itU32),
+        {38 ptPerk}
+        wbFormIDCkNoReach('Perk', [PERK]),
+        {39 ptQuest}
+        wbFormIDCkNoReach('Quest', [QUST]),
+        {40 ptQuestStage}
+        wbInteger('Quest Stage', itU32, wbCTDAParam2QuestStageToStr, wbCTDAParam2QuestStageToInt),
+        {41 ptRace}
+        wbFormIDCkNoReach('Race', [RACE]),
+        {42 ptReferencableObject}
+        wbFormIDCkNoReach('Referenceable Object', [NULL, NPC_, PROJ, TREE, SOUN, ACTI, DOOR, STAT, FURN, CONT, ARMO, AMMO, MISC, WEAP, BOOK, KEYM, ALCH, LIGH, GRAS, ASPC, IDLM, ARMA, MSTT, TACT, FLST, LVLI, LVSP, SPEL, ENCH, OMOD, NOTE, CMPO], [NPC_, PROJ, TREE, SOUN, ACTI, DOOR, STAT, FURN, CONT, ARMO, AMMO, MISC, WEAP, BOOK, KEYM, ALCH, LIGH, GRAS, ASPC, IDLM, ARMA, MSTT, TACT, LVLI, LVSP, SPEL, ENCH, OMOD, NOTE, CMPO]),
+        {43 ptRefType}
+        wbFormIDCkNoReach('Location Ref Type', [LCRT]),
+        {44 ptRegion}
+        wbFormIDCkNoReach('Region', [REGN]),
+        {45 ptScene}
+        wbFormIDCk('Scene', [NULL, SCEN]),
+        {46 ptSex}
+        wbInteger('Sex', itU32, wbSexEnum),
+        {47 ptShout}
+        wbFormIDCkNoReach('Shout', [SHOU]),
+        {48 ptVariableName}
+        wbByteArray('Variable Name (unused)', 4, cpIgnore),
+        {49 ptVATSValueFunction}
         wbInteger('VATS Value Function', itU32, wbVATSValueFunctionEnum),
+        {50 ptVATSValueParam}
+        wbInteger('VATS Value Param (unused)', itU32),
+        {51 ptVoiceType}
+        wbFormIDCkNoReach('Voice Type', [VTYP, FLST]),
+        {52 ptWardState}
+        wbInteger('Ward State', itU32, wbWardStateEnum),
+        {53 ptWeather}
+        wbFormIDCkNoReach('Weather', [WTHR]),
+        {54 ptWorldspace}
+        wbFormIDCkNoReach('Worldspace', [WRLD, FLST]),
+        {55 ptDamageType}
+        wbFormIDCkNoReach('Damage Type', [DMGT, FLST])
+      ]),
+
+      wbUnion('Parameter #2', wbCTDAParam2Decider, [
+        { unknown }
+        wbByteArray('Unknown', 4),
+        { 0 ptNone}
+        wbByteArray('None', 4, cpIgnore),
+        { 1 ptInteger}
+        wbInteger('Integer', itS32),
+        { 2 ptFloat}
+        wbFloat('Float'),
+        { 3 ptActor}
+        wbFormIDCkNoReach('Actor', [NULL, PLYR, ACHR, REFR]),
+        { 4 ptActorBase}
+        wbFormIDCkNoReach('Actor Base', [NPC_]),
+        { 5 ptActorValue}
+        wbActorValue,
+        { 6 ptAdvanceAction}
+        wbInteger('Player Action', itU32, wbAdvanceActionEnum),
+        { 7 ptAlias}
+        wbInteger('Alias', itS32, wbConditionAliasToStr, wbStrToAlias),
+        { 8 ptAlignment}
+        wbInteger('Alignment', itU32, wbAlignmentEnum),
+        { 9 ptAssociationType}
+        wbFormIDCk('Association Type', [ASTP]),
+        {10 ptAxis}
+        wbInteger('Axis', itU32, wbAxisEnum),
+        {11 ptCastingSource}
+        wbInteger('Casting Type', itU32, wbCastingSourceEnum),
+        {12 ptCell}
+        wbFormIDCkNoReach('Cell', [CELL]),
+        {13 ptClass}
+        wbFormIDCkNoReach('Class', [CLAS]),
+        {14 ptCrimeType}
+        wbInteger('Crime Type', itU32, wbCrimeTypeEnum),
+        {15 ptCriticalStage}
+        wbInteger('Critical Stage', itU32, wbCriticalStageEnum),
+        {16 ptEncounterZone}
+        wbFormIDCkNoReach('Encounter Zone', [ECZN]),
+        {17 ptEquipType}
+        wbFormIDCkNoReach('Equip Type', [EQUP]),
+        {18 ptEvent}
+        wbInteger('Event', itU32, wbEventFunctionAndMemberToStr, wbEventFunctionAndMemberToInt),
+        {19 ptEventData}
+        wbFormID('Event Data'),
+        {20 ptFaction}
+        wbFormIDCkNoReach('Faction', [FACT]),
+        {21 ptFormList}
+        wbFormIDCkNoReach('Form List', [FLST]),
+        {22 ptFormType}
+        wbInteger('Form Type', itU32, wbFormTypeEnum),
+        {23 ptFurniture}
+        wbFormIDCkNoReach('Furniture', [FURN, FLST]),
+        {24 ptFurnitureAnim}
+        wbInteger('Furniture Anim', itU32, wbFurnitureAnimTypeEnum),
+        {25 ptFurnitureEntry}
+        wbInteger('Furniture Entry', itU32, wbEnum([], [$010000, 'Front', $020000, 'Behind', $040000, 'Right', $80000, 'Left', $100000, 'Up'])),
+        {26 ptGlobal}
+        wbFormIDCkNoReach('Global', [GLOB]),
+        {27 ptIdleForm}
+        wbFormIDCkNoReach('Idle', [IDLE]),
+        {28 ptInventoryObject}
+        wbFormIDCkNoReach('Inventory Object', [ARMO, BOOK, MISC, WEAP, AMMO, KEYM, ALCH, INGR, FLST, LIGH, LVLI, COBJ, OMOD, NOTE, CMPO]),
+        {29 ptKeyword}
+        wbFormIDCkNoReach('Keyword', [KYWD, FLST, NULL]),
+        {30 ptLocation}
+        wbFormIDCkNoReach('Location', [LCTN]),
+        {31 ptMagicEffect}
+        wbFormIDCkNoReach('Base Effect', [MGEF]),
+        {32 ptMagicItem}
+        wbFormIDCkNoReach('Effect Item', [SPEL, ENCH, ALCH, INGR, SCRL]),
+        {33 ptMiscStat}
+        wbInteger('Misc Stat', itU32, wbMiscStatEnum),
+        {34 ptObjectReference}
+        wbFormIDCkNoReach('Object Reference', [NULL, PLYR, ACHR, REFR, PGRE, PHZD, PMIS, PARW, PBAR, PBEA, PCON, PFLA]),
+        {35 ptOwner}
+        wbFormIDCkNoReach('Owner', [NULL, FACT, NPC_]),
+        {36 ptPackage}
+        wbFormIDCkNoReach('Package', [PACK]),
+        {37 ptPackdata}
+        wbInteger('Packdata ID', itU32),
+        {38 ptPerk}
+        wbFormIDCkNoReach('Perk', [PERK]),
+        {39 ptQuest}
+        wbFormIDCkNoReach('Quest', [QUST]),
+        {40 ptQuestStage}
+        wbInteger('Quest Stage', itU32, wbCTDAParam2QuestStageToStr, wbCTDAParam2QuestStageToInt),
+        {41 ptRace}
+        wbFormIDCkNoReach('Race', [RACE]),
+        {42 ptReferencableObject}
+        wbFormIDCkNoReach('Referenceable Object', [NULL, NPC_, PROJ, TREE, SOUN, ACTI, DOOR, STAT, FURN, CONT, ARMO, AMMO, MISC, WEAP, BOOK, KEYM, ALCH, LIGH, GRAS, ASPC, IDLM, ARMA, MSTT, TACT, FLST, LVLI, LVSP, SPEL, ENCH, OMOD, NOTE, CMPO], [NPC_, PROJ, TREE, SOUN, ACTI, DOOR, STAT, FURN, CONT, ARMO, AMMO, MISC, WEAP, BOOK, KEYM, ALCH, LIGH, GRAS, ASPC, IDLM, ARMA, MSTT, TACT, LVLI, LVSP, SPEL, ENCH, OMOD, NOTE, CMPO]),
+        {43 ptRefType}
+        wbFormIDCkNoReach('Location Ref Type', [LCRT]),
+        {44 ptRegion}
+        wbFormIDCkNoReach('Region', [REGN]),
+        {45 ptScene}
+        wbFormIDCk('Scene', [NULL, SCEN]),
+        {46 ptSex}
+        wbInteger('Sex', itU32, wbSexEnum),
+        {47 ptShout}
+        wbFormIDCkNoReach('Shout', [SHOU]),
+        {48 ptVariableName}
+        wbByteArray('Variable Name (unused)', 4, cpIgnore),
+        {49 ptVATSValueFunction}
+        wbInteger('VATS Value Function', itU32, wbVATSValueFunctionEnum),
+        {50 ptVATSValueParam}
         wbUnion('VATS Value Param', wbCTDAParam2VATSValueParamDecider, [
          { 0} wbFormIDCkNoReach('Weapon', [WEAP]),
          { 1} wbFormIDCkNoReach('Weapon List', [FLST], [WEAP]),
@@ -6272,23 +6396,16 @@ begin
          {19} wbInteger('Delivery Type', itU32, wbTargetEnum),
          {20} wbInteger('Casting Type', itU32, wbCastEnum)
         ]),
-        wbFormIDCkNoReach('Referenceable Object', [NULL, NPC_, PROJ, TREE, SOUN, ACTI, DOOR, STAT, FURN, CONT, ARMO, AMMO, MISC, WEAP, BOOK, KEYM, ALCH, LIGH, GRAS, ASPC, IDLM, ARMA, MSTT, TACT, FLST, LVLI, LVSP, SPEL, SCRL, SHOU, SLGM, ENCH], [NPC_, PROJ, TREE, SOUN, ACTI, DOOR, STAT, FURN, CONT, ARMO, AMMO, MISC, WEAP, BOOK, KEYM, ALCH, LIGH, GRAS, ASPC, IDLM, ARMA, MSTT, TACT, LVLI, LVSP, SPEL, SCRL, SHOU, SLGM, ENCH]),
-        wbFormIDCkNoReach('Region', [REGN]),
-        wbFormIDCkNoReach('Keyword', [KYWD, NULL]),
-        wbInteger('Player Action', itU32, wbAdvanceActionEnum),
-        wbInteger('Casting Type', itU32, wbCastingSourceEnum),
-        wbFormIDCkNoReach('Shout', [SHOU]),
-        wbFormIDCkNoReach('Location', [LCTN]),
-        wbFormIDCkNoReach('Location Ref Type', [LCRT]),
-        wbInteger('Alias', itS32, wbConditionAliasToStr, wbStrToAlias),
-        wbInteger('Packdata ID', itU32),
-        wbFormIDCk('Association Type', [ASTP]),
-        wbInteger('Furniture Anim', itU32, wbFurnitureAnimTypeEnum),
-        wbInteger('Furniture Entry', itU32, wbEnum([], [$010000, 'Front', $020000, 'Behind', $040000, 'Right', $80000, 'Left', $100000, 'Up'])),
-        wbFormIDCk('Scene', [NULL, SCEN]),
+        {51 ptVoiceType}
+        wbFormIDCkNoReach('Voice Type', [VTYP, FLST]),
+        {52 ptWardState}
         wbInteger('Ward State', itU32, wbWardStateEnum),
-        wbInteger('Event', itU32, wbEventFunctionAndMemberToStr, wbEventFunctionAndMemberToInt),
-        wbFormID('Event Data')
+        {53 ptWeather}
+        wbFormIDCkNoReach('Weather', [WTHR]),
+        {54 ptWorldspace}
+        wbFormIDCkNoReach('Worldspace', [WRLD, FLST]),
+        {55 ptDamageType}
+        wbFormIDCkNoReach('Damage Type', [DMGT, FLST])
       ]),
       wbInteger('Run On', itU32, wbEnum([
         {0} 'Subject',
