@@ -70,6 +70,7 @@ var
 	wbZTestFuncEnum: IwbEnumDef;
 	wbScriptProperties: IwbArrayDef;
 	wbScriptPropertyStruct: IwbArrayDef;
+	wbObjectModTypeEnum: IwbEnumDef;
 
 procedure DefineFO4;
 
@@ -4618,6 +4619,23 @@ begin
     wbProgressCallback('"'+Container.Name+'" does not contain an element named Type');
 end;
 
+function wbTargetDecider(aBasePtr: Pointer; aEndPtr: Pointer; const aElement: IwbElement): Integer;
+var
+  Container : IwbContainer;
+  Element   : IwbElement;
+begin
+  Result := 0;
+  if not Assigned(aElement) then Exit;
+  Container := GetContainerFromUnion(aElement);
+  if not Assigned(Container) then Exit;
+
+  Element := Container.ElementByName['Target'];
+  if Assigned(Element) then
+    Result := Element.NativeValue
+  else if wbMoreInfoForDecider then
+    wbProgressCallback('"'+Container.Name+'" does not contain an element named Target');
+end;
+
 procedure wbCNTOsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
 begin
   wbCounterAfterSet('COCT - Count', aElement);
@@ -4897,7 +4915,7 @@ var
   Container       : IwbContainer;
 begin
   if Supports(aElement.Container, IwbContainer, Container) then
-    Result := Container.ElementNativeValues['Parts A Count']
+    Result := Container.ElementNativeValues['Count - Object Modifiers']
   else
     Result := 0;
 end;
@@ -4907,7 +4925,7 @@ var
   Container       : IwbContainer;
 begin
   if Supports(aElement.Container, IwbContainer, Container) then
-    Result := Container.ElementNativeValues['Parts B Count']
+    Result := Container.ElementNativeValues['Count - Property Modifiers']
   else
     Result := 0;
 end;
@@ -7264,32 +7282,149 @@ begin
     Which alters WRLD and LCTN References }
   wbFTYP := wbFormIDCk(FTYP, 'Unknown', [LCRT]);
   wbATTX := wbLString(ATTX, 'Activate Text Override', 0, cpTranslate);
+
+  wbObjectModTypeEnum := wbEnum([
+    {0} 'Unknown 0',
+    {1} 'Unknown 1',
+    {2} 'Unknown 2',
+    {3} 'Unknown 3',
+    {4} 'Unknown 4',
+    {5} 'ebBodyPart',
+    {6} 'Unknown 6',
+    {7} 'Unknown 7',
+    {8} 'Unknown 8',
+    {9} 'Unknown 9',
+   {10} 'Unknown 10',
+   {11} 'Unknown 11',
+   {12} 'Unknown 12',
+   {13} 'Unknown 13',
+   {14} 'Unknown 14'
+  ]);
+
   wbOBTS := wbStruct(OBTS, 'Object Mod Template Item', [
-    wbInteger('Parts A Count', itU32),
-    wbInteger('Parts B Count', itU32),
-    wbByteArray('Unknown', 7),
-    wbArray('Keywords', wbFormIDCk('Keyword', [KYWD, NULL]), -4),
+    wbInteger('Count - Object Modifiers', itU32),
+    wbInteger('Count - Property Modifiers', itU32),
+    wbInteger('Level - Min', itU8), // can't be higher then 255
+    wbByteArray('Unknown', 1),
+    wbInteger('Level - Max', itU8), // can't be higher then 255
+    wbByteArray('Unknown', 1),
     wbByteArray('Unknown', 2),
-    wbArray('Parts A', wbStruct('Part A', [
+    wbByteArray('Unknown', 1),
+    wbArray('Keywords', wbFormIDCk('Keyword', [KYWD, NULL]), -4),
+    wbInteger('Min Level for Ranks', itU8), // can't be higher then 255
+    wbInteger('Alt Levels Per Tier', itU8), // can't be higher then 255
+    wbArray('Object Modifiers', wbStruct('Modifier', [
       wbFormIDCk('Mod', [OMOD]),
-      wbByteArray('Unknown', 2),
+      wbInteger('Attach Point Index', itU16),
       wbInteger('Flags', itU8)
     ]), wbOBTSCounter1),
-    wbArray('Parts B', wbStruct('Part B', [
-      wbByteArray('Unknown', 4),
-      wbByteArray('Unknown', 4),
-      wbByteArray('Unknown', 4),
-      // STAT is here SkinMirelurkSpawnHatchlingJuice [ARMO:00176DA1]
-      // probably not a FormID depending on above values
-      //wbFormIDCk('Material Swap', [MSWP, ARMO, STAT]),
-      wbFormIDCk('FormID', [
-        TREE, SNDR, ACTI, DOOR, STAT, FURN, CONT, ARMO, AMMO, LVLN, LVLC,
-        MISC, WEAP, BOOK, KEYM, ALCH, LIGH, GRAS, ASPC, IDLM, ARMA, INGR,
-        MSTT, TACT, TXST, FLOR, NOTE, CMPO, SCOL, SOUN, SPEL, ARTO, ADDN,
-        BNDS, TERM, MSWP
-      ]),
-      wbFloat('Unknown'),
-      wbByteArray('Unknown', 4)
+    wbArray('Property Modifiers', wbStruct('Property', [
+      wbInteger('Target', itU32, wbObjectModTypeEnum),
+      wbUnion('Modifier', wbTargetDecider, [
+        {0} wbStruct('Data', [
+              wbInteger('Operation', itU32, wbEnum([
+                {0} 'Set',
+                {1} 'Mult+Add',
+                {2} 'Add'
+              ])),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4)
+        {0} ]),
+        {1} wbStruct('Data', [
+              wbInteger('Operation', itU32, wbEnum([
+                {0} 'Set',
+                {1} 'Mult+Add',
+                {2} 'Add'
+              ])),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4)
+        {1} ]),
+        {2} wbStruct('Data', [
+              wbInteger('Operation', itU32, wbEnum([
+                {0} 'Set',
+                {1} 'Mult+Add',
+                {2} 'Add'
+              ])),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4)
+        {2} ]),
+        {3} wbStruct('Data', [
+              wbInteger('Operation', itU32, wbEnum([
+                {0} 'Set',
+                {1} 'Mult+Add',
+                {2} 'Add'
+              ])),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4)
+        {3} ]),
+        {4} wbStruct('Data', [
+              wbInteger('Operation', itU32, wbEnum([
+                {0} 'Set',
+                {1} 'Mult+Add',
+                {2} 'Add'
+              ])),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4)
+        {4} ]),
+        {5} wbStruct('Data', [
+              wbInteger('Operation', itU32, wbEnum([
+                {0} 'Set' // Only choice available for Pattern 5
+              ])),
+              wbByteArray('Unknown', 4),
+              wbInteger('Value', itU32, wbEnum([
+                {0} 'Unknown 0',
+                {1} 'Unknown 1',
+                {2} 'Unknown 2',
+                {3} 'Unknown 3',
+                {4} 'Unknown 4',
+                {5} 'Unknown 5',
+                {6} 'Unknown 6',
+                {7} 'Unknown 7',
+                {8} 'Unknown 8',
+                {9} 'Unknown 9',
+                {10} 'Unknown 10',
+                {11} 'Unknown 11',
+                {12} 'Unknown 12',
+                {13} 'Unknown 13',
+                {14} 'Unknown 14',
+                {15} 'Unknown 15',
+                {16} 'Brain',
+                {17} 'Unknown 17',
+                {18} 'Unknown 18',
+                {19} 'Unknown 19',
+                {20} 'Unknown 20',
+                {21} 'Camera',
+                {22} 'Unknown 22',
+                {23} 'Unknown 23',
+                {24} 'Unknown 24',
+                {25} 'Unknown 25',
+                {26} 'Unknown 26'
+              ])),
+              wbByteArray('Unknown', 4),
+              wbFloat('Step')
+        {5} ]),
+        {6} wbStruct('Data', [
+              wbInteger('Operation', itU32, wbEnum([
+                {0} 'Set',
+                {1} 'Mult+Add',
+                {2} 'Add'
+              ])),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4),
+              wbByteArray('Unknown', 4)
+        {6} ])
+      ])
     ]), wbOBTSCounter2)
   ], cpNormal, True);
 
@@ -7307,7 +7442,7 @@ begin
         ], []),
 
         wbRStruct('Combination', [
-          wbEmpty(OBTF, 'Boolean True'),
+          wbEmpty(OBTF, 'Boolean True'), // editor-only
           wbFULL,
           wbOBTS
         ], [])
@@ -7511,10 +7646,7 @@ begin
 
   wbRecord(ARMO, 'Armor',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
-      {0x00000004}  2, 'Non-Playable',
-      {0x00000040}  6, 'Shield',
-      {0x00000400} 10, 'Unknown 10',
-      {0x00008000} 15, 'Unknown 15'
+      {0x00000004}  2, 'Non-Playable'
     ])), [
     wbEDID,
     wbVMAD,
@@ -7537,12 +7669,13 @@ begin
     wbFormIDCk(YNAM, 'Sound - Pick Up', [SNDR]),
     wbFormIDCk(ZNAM, 'Sound - Drop', [SNDR]),
     wbETYP,
+    wbFormIDCk(BIDS, 'Block Bash Impact Data Set', [IPDS, NULL]),
     wbFormIDCk(BAMT, 'Alternate Block Material', [MATT]),
     wbFormIDCk(RNAM, 'Race', [RACE]),
     wbKSIZ,
     wbKWDAs,
     wbDESC,
-    wbFormIDCk(INRD, 'Unknown', [INNR]),
+    wbFormIDCk(INRD, 'Instance Naming', [INNR]),
     wbRArray('Armatures',
       wbRStruct('Armature', [
         wbInteger(INDX, 'Index', itU16),
@@ -7555,8 +7688,16 @@ begin
       wbInteger('Power Armor Health', itU32)
     ], cpNormal, True),
     wbStruct(FNAM, '', [
-      wbInteger('Damage Resistance', itU16),
-      wbUnknown
+      wbInteger('Unknown', itU16),
+      wbByteArray('Unknown', 2),
+      wbInteger('Stagger', itU16, wbEnum([
+        'None',
+        'Small',
+        'Medium',
+        'Large',
+        'Extra Large'
+      ])),
+      wbByteArray('Unknown', 2)
     ]),
     wbArrayS(DAMA, 'Resistances',wbStructSK([0], 'Resistance', [
       wbFormIDCk('Damage Type', [DMGT]),
