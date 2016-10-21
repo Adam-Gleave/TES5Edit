@@ -12541,12 +12541,21 @@ begin
     wbEDID,
     wbOBNDReq,
     wbMODL,
-    wbStruct(DNAM, 'Direction Material', [
-      wbFloat('Max Angle (30-120)'),
-      wbFormIDCk('Material', [MATO, NULL]),
-      // SSE
-      wbUnknown
-    ], cpNormal, True),
+    IsSSE(
+      wbStruct(DNAM, 'Direction Material', [
+        wbFloat('Max Angle (30-120)'),
+        wbFormIDCk('Material', [MATO, NULL]),
+        // SSE
+        wbInteger('Flags', itU8, wbFlags([
+          {0x01} 'Considered Snow'
+        ])),
+        wbByteArray('Unused', 3, cpIgnore)
+      ], cpNormal, True, nil, 2),
+      wbStruct(DNAM, 'Direction Material', [
+        wbFloat('Max Angle (30-120)'),
+        wbFormIDCk('Material', [MATO, NULL])
+      ], cpNormal, True)
+    ),
     wbArray(MNAM, 'Distant LOD',
       wbStruct('LOD', [
         {>>> Contains null-terminated mesh filename followed by random data up to 260 bytes <<<}
