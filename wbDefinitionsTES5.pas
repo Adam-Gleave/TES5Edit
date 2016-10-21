@@ -12890,20 +12890,20 @@ begin
         'No dismember/explode'
       ])),
       wbInteger('Flags2', itU32, wbFlags([
-        {0x00000001}'Player Only',
-        {0x00000002}'NPCs Use Ammo',
-        {0x00000004}'No Jam After Reload (unused)',
-        {0x00000008}'Unknown 4',
-        {0x00000010}'Minor Crime',
-        {0x00000020}'Range Fixed',
-        {0x00000040}'Not Used in Normal Combat',
-        {0x00000080}'Unknown 8',
-        {0x00000100}'Don''t Use 3rd Person IS Anim (unused)',
-        {0x00000200}'Unknown 10',
-        {0x00000400}'Rumble - Alternate',
-        {0x00000800}'Unknown 12',
-        {0x00001000}'Non-hostile',
-        {0x00002000}'Bound Weapon'
+        {0x00000001} 'Player Only',
+        {0x00000002} 'NPCs Use Ammo',
+        {0x00000004} 'No Jam After Reload (unused)',
+        {0x00000008} 'Unknown 4',
+        {0x00000010} 'Minor Crime',
+        {0x00000020} 'Range Fixed',
+        {0x00000040} 'Not Used in Normal Combat',
+        {0x00000080} 'Unknown 8',
+        {0x00000100} 'Don''t Use 3rd Person IS Anim (unused)',
+        {0x00000200} 'Burst Shot',
+        {0x00000400} 'Rumble - Alternate',
+        {0x00000800} 'Long Bursts',
+        {0x00001000} 'Non-hostile',
+        {0x00002000} 'Bound Weapon'
       ], [2, 8])),
       wbFloat('Animation Attack Mult'),
       wbFloat('Unknown'),
@@ -12917,18 +12917,31 @@ begin
       wbByteArray('Unknown', 4),
       wbFloat('Stagger')
     ]),
-    wbStruct(CRDT, 'Critical Data', [
-      wbInteger('Damage', itU16),
-      wbByteArray('Unused', 2, cpIgnore),
-      wbFloat('% Mult'),
-      wbInteger('Flags', itU8, wbFlags([
-        'On Death'
-      ])),
-      wbByteArray('Unused', 3, cpIgnore),
-      wbFormIDCk('Effect', [SPEL, NULL]),
-      // SSE
-      wbUnknown
-    ]),
+    IsSSE(
+      wbStruct(CRDT, 'Critical Data', [
+        wbInteger('Damage', itU16),
+        wbByteArray('Unknown', 2),
+        wbFloat('% Mult'),
+        wbInteger('Flags', itU8, wbFlags([
+          'On Death'
+        ])),
+		// SSE
+        wbByteArray('Unused', 3, cpIgnore),
+        wbByteArray('Unknown', 4),
+        wbFormIDCk('Effect', [SPEL, NULL]),
+        wbByteArray('Unknown', 4)
+      ]),
+      wbStruct(CRDT, 'Critical Data', [
+        wbInteger('Damage', itU16),
+        wbByteArray('Unknown', 2),
+        wbFloat('% Mult'),
+        wbInteger('Flags', itU8, wbFlags([
+          'On Death'
+        ])),
+        wbByteArray('Unused', 3, cpIgnore),
+        wbFormIDCk('Effect', [SPEL, NULL])
+      ])
+    ),
     wbInteger(VNAM, 'Detection Sound Level', itU32, wbSoundlevelEnum),
     wbFormIDCk(CNAM, 'Template', [WEAP])
   ], False, nil, cpNormal, False, wbWEAPAfterLoad, wbKeywordsAfterSet);
