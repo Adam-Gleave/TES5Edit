@@ -13166,13 +13166,22 @@ begin
       wbFormIDCK('Night', [IMGS, NULL])
     ]),
     // SSE
-    wbUnknown(HNAM),
-    wbRArray('Directional Ambient Lighting Colors',
-      wbStruct(DALC, 'Sunrise/Day/Sunset/Night Order', [wbAmbientColors], cpNormal, True)
-    ),
+    wbStruct(HNAM, 'Volumetric Lighting', [
+      wbFormIDCK('Sunrise', [VOLI, NULL]),
+      wbFormIDCK('Day', [VOLI, NULL]),
+      wbFormIDCK('Sunset', [VOLI, NULL]),
+      wbFormIDCK('Night', [VOLI, NULL])
+    ]),
+    wbRStruct('Directional Ambient Lighting Colors', [
+      wbAmbientColors(DALC, 'Sunrise'),
+      wbAmbientColors(DALC, 'Day'),
+      wbAmbientColors(DALC, 'Sunset'),
+      wbAmbientColors(DALC, 'Night')
+    ], [], cpNormal, True),
     wbByteArray(NAM2, 'Unused', 0, cpIgnore),
     wbByteArray(NAM3, 'Unused', 0, cpIgnore),
-    wbRStruct('Aurora', [wbMODL], [])
+    wbRStruct('Aurora', [wbMODL], []),
+    wbFormIDCk(GNAM, 'Sun Glare Lens Flare', [LENS])
   ]);
 
   if IsSSE then begin
