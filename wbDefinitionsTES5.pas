@@ -5609,8 +5609,8 @@ begin
       wbInteger('Blue', itU8),
       wbInteger('Unused', itU8)
     ]),
-    wbFormIDCk(SNAM, 'Sound - Looping', [SNDR, SOUN]),
-    wbFormIDCk(VNAM, 'Sound - Activation', [SNDR, SOUN]),
+    wbFormIDCk(SNAM, 'Sound - Looping', [SNDR]),
+    wbFormIDCk(VNAM, 'Sound - Activation', [SNDR]),
     wbFormIDCk(WNAM, 'Water Type', [WATR]),
     wbLString(RNAM, 'Activate Text Override', 0, cpTranslate),
     wbInteger(FNAM, 'Flags', itU16, wbFlags([
@@ -5635,7 +5635,7 @@ begin
     wbKSIZ,
     wbKWDAs,
     wbUnknown(PNAM, cpIgnore, True),
-    wbFormIDCk(SNAM, 'Looping Sound', [SNDR, SOUN]),
+    wbFormIDCk(SNAM, 'Looping Sound', [SNDR]),
     wbUnknown(FNAM, cpIgnore, True),
     wbFormIDCk(VNAM, 'Voice Type', [VTYP])
   ], False, nil, cpNormal, False, nil, wbKeywordsAfterSet);
@@ -6919,8 +6919,8 @@ begin
       ])),
       wbFloat('Weight')
     ], cpNormal, True),
-    wbFormIDCk(SNAM, 'Sound - Open', [SOUN, SNDR]),
-    wbFormIDCk(QNAM, 'Sound - Close', [SOUN, SNDR])
+    wbFormIDCk(SNAM, 'Sound - Open', [SNDR]),
+    wbFormIDCk(QNAM, 'Sound - Close', [SNDR])
   ], True, nil, cpNormal, False, nil, wbContainerAfterSet);
 
   wbCSDT := wbRStructSK([0], 'Sound Type', [
@@ -6950,7 +6950,7 @@ begin
       {21} 'PlayRandom/Loop'
     ])),
     wbRArrayS('Sounds', wbRStructSK([0], 'Sound', [
-      wbFormIDCk(CSDI, 'Sound', [SOUN, SNDR, NULL], False, cpNormal, True),
+      wbFormIDCk(CSDI, 'Sound', [SNDR, NULL], False, cpNormal, True),
       wbInteger(CSDC, 'Sound Chance', itU8, nil, cpNormal, True)
     ], []), cpNormal, True)
   ], []);
@@ -7227,9 +7227,9 @@ begin
     wbFULL,
     wbMODL,
     wbDEST,
-    wbFormIDCk(SNAM, 'Sound - Open', [SOUN, SNDR]),
-    wbFormIDCk(ANAM, 'Sound - Close', [SOUN, SNDR]),
-    wbFormIDCk(BNAM, 'Sound - Loop', [SOUN, SNDR]),
+    wbFormIDCk(SNAM, 'Sound - Open', [SNDR]),
+    wbFormIDCk(ANAM, 'Sound - Close', [SNDR]),
+    wbFormIDCk(BNAM, 'Sound - Loop', [SNDR]),
     wbInteger(FNAM, 'Flags', itU8, wbFlags([
       '',
       'Automatic',
@@ -7361,7 +7361,7 @@ begin
       wbFloat('Addon Models - Scale End'),
       wbFloat('Addon Models - Scale In Time'),
       wbFloat('Addon Models - Scale Out Time'),
-      wbFormIDCk('Ambient Sound', [SNDR, SOUN, NULL]),
+      wbFormIDCk('Ambient Sound', [SNDR, NULL]),
       wbByteColors('Fill/Texture Effect - Color Key 2'),
       wbByteColors('Fill/Texture Effect - Color Key 3'),
       wbStruct('Fill/Texture Effect - Color Key Scale/Time', [
@@ -7831,12 +7831,12 @@ begin
       {28} wbFloat('Explosion - Alt. Trigger - Proximity'),
       {32} wbFloat('Explosion - Alt. Trigger - Timer'),
       {36} wbFormIDCk('Explosion', [EXPL, NULL]),
-      {40} wbFormIDCk('Sound', [SOUN, SNDR, NULL]),
+      {40} wbFormIDCk('Sound', [SNDR, NULL]),
       {44} wbFloat('Muzzle Flash - Duration'),
       {48} wbFloat('Fade Duration'),
       {52} wbFloat('Impact Force'),
-      {56} wbFormIDCk('Sound - Countdown', [SOUN, SNDR, NULL]),
-      {60} wbFormIDCk('Sound - Disable', [SOUN, SNDR, NULL]),
+      {56} wbFormIDCk('Sound - Countdown', [SNDR, NULL]),
+      {60} wbFormIDCk('Sound - Disable', [SNDR, NULL]),
       {64} wbFormIDCk('Default Weapon Source', [WEAP, NULL]),
       {68} wbFloat('Cone Spread'),
       {72} wbFloat('Collision Radius'),
@@ -8569,7 +8569,7 @@ begin
     wbOBNDReq,
     wbMODL,
     wbInteger(DATA, 'Node Index', itS32, nil, cpNormal, True),
-    wbFormIDCk(SNAM, 'Sound', [SOUN, SNDR, NULL]),
+    wbFormIDCk(SNAM, 'Sound', [SNDR, NULL]),
     wbStruct(DNAM, 'Data', [
       wbInteger('Master Particle System Cap', itU16),
       wbInteger('Flags', itU16, wbEnum([], [
@@ -8721,8 +8721,8 @@ begin
     wbDODT,
     wbFormIDCk(DNAM, 'Texture Set', [TXST]),
     wbFormIDCk(ENAM, 'Secondary Texture Set', [TXST]),
-    wbFormIDCk(SNAM, 'Sound 1', [SNDR, SOUN, NULL]),
-    wbFormIDCk(NAM1, 'Sound 2', [SNDR, SOUN, NULL]),
+    wbFormIDCk(SNAM, 'Sound 1', [SNDR, NULL]),
+    wbFormIDCk(NAM1, 'Sound 2', [SNDR, NULL]),
     wbFormIDCk(NAM2, 'Hazard', [HAZD, NULL])
   ]);
 
@@ -12327,7 +12327,7 @@ begin
       {--- Sound ---}
       wbFormIDCk(RDMO, 'Music', [MUSC], False, cpNormal, False, wbREGNSoundDontShow),
       wbArrayS(RDSA, 'Sounds', wbStructSK([0], 'Sound', [
-        wbFormIDCk('Sound', [SOUN, SNDR, NULL]),
+        wbFormIDCk('Sound', [SNDR, NULL]),
         wbInteger('Flags', itU32, wbFlags([
           {0x00000001}'Pleasant',
           {0x00000002}'Cloudy',
@@ -12638,7 +12638,7 @@ begin
     wbLString(RNAM, 'Activate Text Override', 0, cpTranslate),
     wbUnknown(FNAM),
     wbFormIDCk(PFIG, 'Ingredient', [INGR, ALCH, LVLI, MISC, NULL]),
-    wbFormIDCK(SNAM, 'Sound', [SNDR, SOUN, NULL]),
+    wbFormIDCK(SNAM, 'Sound', [SNDR, NULL]),
     wbStruct(PFPC, 'Seasonal ingredient production', [
       wbInteger('Spring', itU8),
       wbInteger('Summer ', itU8),
@@ -13148,7 +13148,7 @@ begin
     wbInteger(NAM1, 'Disabled Cloud Layers', itU32, wbFlags(['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'])),
     wbRArray('Sounds',
       wbStruct(SNAM, 'Sound', [
-        wbFormIDCK('Sound', [SOUN, SNDR, NULL]),
+        wbFormIDCK('Sound', [SNDR, NULL]),
         wbInteger('Type', itU32, wbEnum([
           {0x01} 'Default',
           {0x02} 'Precipitation',
