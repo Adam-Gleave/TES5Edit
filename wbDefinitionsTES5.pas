@@ -10257,7 +10257,9 @@ begin
     wbInteger(SNAM, 'Texture Specular Exponent', itU8, nil, cpNormal, True),
     wbRArrayS('Grasses', wbFormIDCk(GNAM, 'Grass', [GRAS])),
     // SSE
-    wbUnknown(INAM)
+    wbInteger(INAM, IsSSE('Flags', 'Unused'), itU32, wbFlags([
+      {0x01} 'Is Snow'
+    ]))
   ]);
 
   wbRecord(LVLN, 'Leveled NPC', [
