@@ -812,7 +812,6 @@ var
   wbOFST: IwbSubRecordDef;
   wbNVNM: IwbSubRecordDef;
   wbNAVIslandData: IwbStructDef;
-  wbCELLDATA: IwbSubRecordDef;
 
 
 function IsSSE: Boolean; inline; overload;
@@ -6668,33 +6667,6 @@ begin
   ReferenceRecord(PHZD, 'Placed Hazard');
   ReferenceRecord(PMIS, 'Placed Missile');
 
-  if IsSSE then
-    wbCELLDATA :=
-      wbInteger(DATA, 'Flags', itU16, wbFlags([
-        {0x0001} 'Is Interior Cell',
-        {0x0002} 'Has Water',
-        {0x0004} 'Can''t Travel From Here',
-        {0x0008} 'No LOD Water',
-        {0x0010} 'Unknown 5',
-        {0x0020} 'Public Area',
-        {0x0040} 'Hand Changed',
-        {0x0080} 'Show Sky',
-        {0x0100} 'Use Sky Lighting'
-      ]), cpNormal, True, False, nil, wbCELLDATAAfterSet)
-  else
-    wbCELLDATA :=
-      wbInteger(DATA, 'Flags', itU32, wbFlags([
-        {0x0001} 'Is Interior Cell',
-        {0x0002} 'Has Water',
-        {0x0004} 'Can''t Travel From Here',
-        {0x0008} 'No LOD Water',
-        {0x0010} 'Unknown 5',
-        {0x0020} 'Public Area',
-        {0x0040} 'Hand Changed',
-        {0x0080} 'Show Sky',
-        {0x0100} 'Use Sky Lighting'
-      ]), cpNormal, True, False, nil, wbCELLDATAAfterSet);
-
   wbRecord(CELL, 'Cell',
     wbFlags(wbRecordFlagsFlags, wbFlagsList([
       {0x00000400} 10, 'Persistent',
@@ -6707,9 +6679,19 @@ begin
     {>>>
     Flags can be itU8, but CELL\DATA has a critical role in various wbImplementation.pas routines
     and replacing it with wbUnion generates error when setting for example persistent flag in REFR.
-    So let it be always itU16
+    So let it always be an integer
     <<<}
-    wbCELLDATA,
+    wbInteger(DATA, 'Flags', IsSSE(itU32, itU16), wbFlags([
+      {0x0001} 'Is Interior Cell',
+      {0x0002} 'Has Water',
+      {0x0004} 'Can''t Travel From Here',
+      {0x0008} 'No LOD Water',
+      {0x0010} 'Unknown 5',
+      {0x0020} 'Public Area',
+      {0x0040} 'Hand Changed',
+      {0x0080} 'Show Sky',
+      {0x0100} 'Use Sky Lighting'
+    ]), cpNormal, True, False, nil, wbCELLDATAAfterSet),
     wbStruct(XCLC, 'Grid', [
       wbInteger('X', itS32),
       wbInteger('Y', itS32),
