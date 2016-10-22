@@ -368,6 +368,9 @@ const
   LCSR : TwbSignature = 'LCSR'; { New to Skyrim }
   LCTN : TwbSignature = 'LCTN';
   LCUN : TwbSignature = 'LCUN'; { New to Skyrim }
+  LENS : TwbSignature = 'LENS'; { New to SSE }
+  LFSD : TwbSignature = 'LFSD'; { New to SSE }
+  LFSP : TwbSignature = 'LFSP'; { New to SSE }
   LGTM : TwbSignature = 'LGTM';
   LIGH : TwbSignature = 'LIGH';
   LLCT : TwbSignature = 'LLCT'; {New to Skyrim, part of LVLI 'Count'}
@@ -4161,6 +4164,11 @@ procedure wbMGEFAfterSet(const aElement: IwbElement; const aOldValue, aNewValue:
 begin
   wbKeywordsAfterSet(aElement, aOldValue, aNewValue);
   wbCounterContainerByPathAfterSet('Magic Effect Data\DATA - Data\Counter effect count', 'Counter Effects', aElement);
+end;
+
+procedure wbLENSAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
+begin
+  wbCounterAfterSet('LFSP - Count', aElement);
 end;
 
 procedure wbIDLAsAfterSet(const aElement: IwbElement; const aOldValue, aNewValue: Variant);
@@ -13166,23 +13174,50 @@ begin
     wbRStruct('Aurora', [wbMODL], [])
   ]);
 
-  if IsSSE then
-  wbRecord(VOLI, 'Volumetric Lighting', [
-    wbEDID,
-    wbFloat(CNAM, 'Intensity'),
-    wbFloat(DNAM, 'Custom Color - Contribution'),
-    wbFloat(ENAM, 'Red', cpNormal, False, 255, 0),
-    wbFloat(FNAM, 'Green', cpNormal, False, 255, 0),
-    wbFloat(GNAM, 'Blue', cpNormal, False, 255, 0),
-    wbFloat(HNAM, 'Density - Contribution'),
-    wbFloat(INAM, 'Density - Size'),
-    wbFloat(JNAM, 'Density - Wind Speed'),
-    wbFloat(KNAM, 'Density - Falling Speed'),
-    wbFloat(LNAM, 'Phase Function - Contribution'),
-    wbFloat(MNAM, 'Phase Function - Scattering'),
-    wbFloat(NNAM, 'Sampling Repartition - Range Factor') { max 1.0 }
-  ]);
+  if IsSSE then begin
+    wbRecord(VOLI, 'Volumetric Lighting', [
+      wbEDID,
+      wbFloat(CNAM, 'Intensity'),
+      wbFloat(DNAM, 'Custom Color - Contribution'),
+      wbFloat(ENAM, 'Red', cpNormal, False, 255, 0),
+      wbFloat(FNAM, 'Green', cpNormal, False, 255, 0),
+      wbFloat(GNAM, 'Blue', cpNormal, False, 255, 0),
+      wbFloat(HNAM, 'Density - Contribution'),
+      wbFloat(INAM, 'Density - Size'),
+      wbFloat(JNAM, 'Density - Wind Speed'),
+      wbFloat(KNAM, 'Density - Falling Speed'),
+      wbFloat(LNAM, 'Phase Function - Contribution'),
+      wbFloat(MNAM, 'Phase Function - Scattering'),
+      wbFloat(NNAM, 'Sampling Repartition - Range Factor') { max 1.0 }
+    ]);
 
+    wbRecord(LENS, 'Lens Flare', [
+      wbEDID,
+      wbFloat(CNAM, 'Color Influence'),
+      wbFloat(DNAM, 'Fade Distance Radius Scale'),
+      wbInteger(LFSP, 'Count', itU32, nil, cpBenign),
+      wbRArray('Lens Flare Sprites',
+        wbRStruct('Flare', [
+          wbString(DNAM, 'Lens Flare Sprite ID'),
+          wbString(FNAM, 'Texture'),
+          wbStruct(LFSD, 'Lens Flare Data', [
+            wbFloatColors('Tint'),
+            wbFloat('Width'),
+            wbFloat('Height'),
+            wbFloat('Position'),
+            wbFloat('Angular Fade'),
+            wbFloat('Opacity'),
+            wbInteger('Flags', itU32, wbFlags([
+              {0x01} 'Rotates',
+              {0x02} 'Shrinks When Occluded'
+            ]))
+          ])
+        ], []),
+        cpNormal, False, nil, wbLENSAfterSet
+      )
+    ]);
+
+  end;
 end;
 
 {>>> Unused records, they have empty GRUP in skyrim.esm <<<}
@@ -13328,6 +13363,7 @@ begin
    wbAddGroupOrder(COLL);
    wbAddGroupOrder(CLFM);
    wbAddGroupOrder(REVB);
+   if IsSSE then wbAddGroupOrder(LENS); {New to SSE}
 end;
 
 procedure DefineTES5;
