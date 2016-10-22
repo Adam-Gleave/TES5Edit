@@ -814,10 +814,35 @@ var
   wbCELLDATA: IwbSubRecordDef;
 
 
-function IsSSE: Boolean; inline;
+function IsSSE: Boolean; inline; overload;
 begin
   Result := wbGameMode = gmSSE;
 end;
+
+function IsSSE(const aDef1, aDef2: TwbIntType): TwbIntType; inline; overload;
+begin
+  if IsSSE then
+    Result := aDef1
+  else
+    Result := aDef2;
+end;
+
+function IsSSE(const aDef1, aDef2: String): String; inline; overload;
+begin
+  if IsSSE then
+    Result := aDef1
+  else
+    Result := aDef2;
+end;
+
+function IsSSE(const aDef1, aDef2: IwbSubRecordDef): IwbSubRecordDef; inline; overload;
+begin
+  if IsSSE then
+    Result := aDef1
+  else
+    Result := aDef2;
+end;
+
 
 function Sig2Int(aSignature: TwbSignature): Cardinal; inline;
 begin
