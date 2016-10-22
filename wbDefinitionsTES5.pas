@@ -10717,9 +10717,10 @@ begin
     wbFormIDCk(CRIF, 'Crime faction', [FACT], False, cpNormal, False),
     wbFormIDCk(FTST, 'Head texture', [TXST], False, cpNormal, False),
     wbStruct(QNAM, 'Texture lighting', [
-      wbFloat('Red'),
-      wbFloat('Green'),
-      wbFloat('Blue')
+      wbFloat('Red', cpNormal, True, 255, 0),
+      wbFloat('Green', cpNormal, True, 255, 0),
+      wbFloat('Blue', cpNormal, True, 255, 0),
+      wbFloat('Alpha')
     ]),
     wbStruct(NAM9, 'Face morph', [
       wbFloat('Nose Long/Short'),
