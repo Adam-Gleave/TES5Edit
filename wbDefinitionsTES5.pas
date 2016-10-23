@@ -822,14 +822,6 @@ begin
   Result := wbGameMode = gmSSE;
 end;
 
-function IsSSE(const aDef1, aDef2: TwbIntType): TwbIntType; inline; overload;
-begin
-  if IsSSE then
-    Result := aDef1
-  else
-    Result := aDef2;
-end;
-
 function IsSSE(const aDef1, aDef2: String): String; inline; overload;
 begin
   if IsSSE then
@@ -3822,7 +3814,7 @@ var
 //  Container2   : IwbContainerElementRef;
   MainRecord   : IwbMainRecord;
   DataSubRec   : IwbSubrecord;
-  Flags        : Byte;
+  Flags8       : Byte;
 begin
   if wbBeginInternalEdit then try
     if not Supports(aElement, IwbContainerElementRef, Container) then
@@ -3838,11 +3830,11 @@ begin
       Exit;
 
     if Supports(Container.ElementBySignature['DATA'] , IwbSubRecord, DataSubRec) then begin
-      // expand itU8 flags to itU16
+      // expand legacy itU8 flags to itU16
       if DataSubRec.SubRecordHeaderSize = 1 then begin
-        Flags := PByte(DataSubRec.DataBasePtr)^;
+        Flags8 := PByte(DataSubRec.DataBasePtr)^;
         DataSubRec.SetToDefault;
-        DataSubRec.NativeValue := Flags;
+        DataSubRec.NativeValue := Flags8;
       end;
       // 'Default' water height for exterior cells if not set (so water height will be taken from WRLD by game)
       if (not Container.ElementExists['XCLW']) and ((Integer(DataSubRec.NativeValue) and $02) <> 0) then begin
@@ -6689,7 +6681,7 @@ begin
     and replacing it with wbUnion generates error when setting for example persistent flag in REFR.
     So let it always be an integer
     <<<}
-    wbInteger(DATA, 'Flags', IsSSE(itU32, itU16), wbFlags([
+    wbInteger(DATA, 'Flags', itU16, wbFlags([
       {0x0001} 'Is Interior Cell',
       {0x0002} 'Has Water',
       {0x0004} 'Can''t Travel From Here',
